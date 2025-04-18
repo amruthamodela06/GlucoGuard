@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard - Diasure</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f6f9fc;
+    }
+    .navbar {
+      background-color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 32px;
+      border-bottom: 1px solid #eee;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .navbar .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .navbar .logo img {
+      width: 32px;
+      height: 32px;
+    }
+    .navbar .logo span {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #1c87c9;
+    }
+    .navbar nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      margin: 0;
+    }
+    .navbar nav ul li a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+    }
+    .navbar nav ul li a:hover {
+      color: #1c87c9;
+    }
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 30px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+      animation: fadeSlide 0.6s ease-in-out;
+    }
+    h1 {
+      font-size: 2rem;
+      color: #1c87c9;
+      margin-bottom: 10px;
+    }
+    .section {
+      margin-top: 30px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    select, input[type="text"], textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 1rem;
+      outline-color: #1c87c9;
+    }
+    button {
+      background-color: #1c87c9;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-weight: 600;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #166da5;
+    }
+    .fade-in-msg {
+      animation: fadeIn 0.8s ease-in forwards;
+      color: green;
+      margin-top: 10px;
+    }
+    .meal-tip {
+      background-color: #e8f5ff;
+      border-left: 5px solid #1c87c9;
+      padding: 16px;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+    .chatbot-box {
+      margin-top: 40px;
+      background-color: #f1f1f1;
+      padding: 20px;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    .chat-messages {
+      flex-grow: 1;
+      padding: 10px;
+      background-color: white;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    .message {
+      margin: 5px 0;
+      padding: 8px 12px;
+      border-radius: 5px;
+    }
+    .user-message {
+      background-color: #e0f7fa;
+      text-align: right;
+    }
+    .bot-message {
+      background-color: #e8f5ff;
+      text-align: left;
+    }
+    .chat-input {
+      display: flex;
+      gap: 10px;
+    }
+    .chat-input input {
+      flex-grow: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      outline-color: #1c87c9;
+    }
+    .chat-input button {
+      padding: 10px 20px;
+      margin: 0;
+    }
+    .typing-dots::after {
+      content: ' .';
+      animation: dots 0.9s steps(3, end) infinite;
+    }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+    @keyframes dots {
+      0%, 20% { content: ' .'; }
+      40% { content: ' ..'; }
+      60%, 80% { content: ' ...'; }
+      100% { content: ' .'; }
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Diasure Logo" />
+      <span>Diasure</span>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/checkup">Checkup</a></li>
+        <li><a href="/history">History</a></li>
+        <li><a href="/logout"><i class="fas fa-sign-out-alt"></i></a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h1>Welcome, {{ name }} 👋</h1>
+
+    <div class="section">
+      <form id="logMoodForm">
+        <input type="hidden" name="action" value="log_mood">
+        <label for="mood">How are you feeling today?</label>
+        <select name="mood" id="mood" required>
+          <option value="">-- Select Mood --</option>
+          <option value="Happy">😊 Happy</option>
+          <option value="Stressed">😓 Stressed</option>
+          <option value="Tired">😴 Tired</option>
+          <option value="Energetic">⚡ Energetic</option>
+        </select>
+        <label for="notes">Optional Notes</label>
+        <textarea name="notes" id="notes" rows="3" placeholder="Any thoughts you'd like to add?"></textarea>
+        <button type="submit">Log Mood</button>
+        <p id="moodResponse" class="fade-in-msg" style="display: {% if mood_message %}block{% else %}none{% endif %};">{% if mood_message %}{{ mood_message }}{% endif %}</p>
+        <p id="wellnessTip" class="fade-in-msg" style="color:#1c87c9; display: {% if wellness_tip %}block{% else %}none{% endif %};">{% if wellness_tip %}🧘 Tip: {{ wellness_tip }}{% endif %}</p>
+      </form>
+    </div>
+
+    <div class="section">
+      <form id="savePrefsForm">
+        <input type="hidden" name="action" value="save_prefs">
+        <div class="form-group">
+          <label for="diet">What is your dietary preference?</label>
+          <select name="diet" id="diet">
+            <option value="veg" {% if selected_diet == 'veg' %}selected{% endif %}>Vegetarian</option>
+            <option value="nonveg" {% if selected_diet == 'nonveg' %}selected{% endif %}>Non-Vegetarian</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="allergy">Do you have any allergies or dietary restrictions?</label>
+          <input type="text" name="allergy" id="allergy" placeholder="e.g. Nuts, Dairy, Gluten, Fish, Mutton" value="{{ selected_allergy|default('') }}">
+        </div>
+        <button type="submit">Save Preferences</button>
+        <p id="savePrefsMessage" class="fade-in-msg" style="display: {% if pref_message %}block{% else %}none{% endif %};">{% if pref_message %}{{ pref_message }}{% endif %}</p>
+      </form>
+
+      <div id="mealTip" class="meal-tip" style="display: none;">
+        <!-- Meal plan will be populated dynamically by JavaScript -->
+      </div>
+    </div>
+
+    <div class="section chatbot-box">
+      <div class="chat-messages" id="chatMessages">
+        <div class="message bot-message">🤖 Hello! I’m your Diasure chatbot. Ask me about diabetes, meals, or exercises!</div>
+      </div>
+      <div class="chat-input">
+        <input type="text" id="chatInput" placeholder="Type your question...">
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Handle Log Mood Form Submission
+    document.getElementById('logMoodForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
+      const moodResponse = document.getElementById('moodResponse');
+      const wellnessTip = document.getElementById('wellnessTip');
+      const mealTip = document.getElementById('mealTip');
+
+      // Clear previous messages and hide meal plan
+      moodResponse.style.display = 'none';
+      wellnessTip.style.display = 'none';
+      mealTip.style.display = 'none';
+
+      try {
+        const response = await fetch('{{ url_for("dashboard") }}', {
+          method: 'POST',
+          body: formData
+        });
+
+        // Check if response is JSON
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          const text = await response.text();
+          console.error('Non-JSON response:', text);
+          throw new Error('Server did not return JSON');
+        }
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Network response was not ok');
+        }
+
+        const data = await response.json();
+
+        // Display mood response
+        if (data.mood_message) {
+          moodResponse.textContent = data.mood_message;
+          moodResponse.style.display = 'block';
+          moodResponse.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // Display wellness tip
+        if (data.wellness_tip) {
+          wellnessTip.textContent = `🧘 Tip: ${data.wellness_tip}`;
+          wellnessTip.style.display = 'block';
+        }
+
+        // Reset form
+        form.reset();
+      } catch (error) {
+        console.error('Error:', error);
+        moodResponse.textContent = `Error: ${error.message}`;
+        moodResponse.style.display = 'block';
+        moodResponse.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    });
+
+    // Handle Save Preferences Form Submission
+    document.getElementById('savePrefsForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
+      const savePrefsMessage = document.getElementById('savePrefsMessage');
+      const mealTip = document.getElementById('mealTip');
+
+      // Clear previous message and meal plan
+      savePrefsMessage.style.display = 'none';
+      mealTip.style.display = 'none';
+
+      try {
+        const response = await fetch('{{ url_for("dashboard") }}', {
+          method: 'POST',
+          body: formData
+        });
+
+        // Check if response is JSON
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          const text = await response.text();
+          console.error('Non-JSON response:', text);
+          throw new Error('Server did not return JSON');
+        }
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Network response was not ok');
+        }
+
+        const data = await response.json();
+
+        // Display preference message
+        if (data.pref_message) {
+          savePrefsMessage.textContent = data.pref_message;
+          savePrefsMessage.style.display = 'block';
+        }
+
+        // Update meal plan if provided
+        if (data.meal_tip) {
+          mealTip.innerHTML = `
+            <strong>Your Personalized Meal Plan for Today:</strong>
+            <ul>
+              <li><strong>🌅 Morning:</strong> ${data.meal_tip.morning}</li>
+              <li><strong>🍱 Lunch:</strong> ${data.meal_tip.lunch}</li>
+              <li><strong>☕ Evening:</strong> ${data.meal_tip.evening}</li>
+              <li><strong>🌙 Night:</strong> ${data.meal_tip.dinner}</li>
+              <li><strong>🧃 Juice:</strong> ${data.meal_tip.juice}</li>
+            </ul>
+            ${data.meal_tip.note ? `<p><em>${data.meal_tip.note}</em></p>` : ''}
+          `;
+          mealTip.style.display = 'block';
+          mealTip.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        savePrefsMessage.textContent = `Error: ${error.message}`;
+        savePrefsMessage.style.display = 'block';
+        savePrefsMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    });
+
+    // Handle Chatbot Messages
+    function sendMessage() {
+      const input = document.getElementById('chatInput');
+      const message = input.value.trim();
+      if (!message) return;
+
+      // Display user message
+      const chatMessages = document.getElementById('chatMessages');
+      const userMsg = document.createElement('div');
+      userMsg.className = 'message user-message';
+      userMsg.textContent = message;
+      chatMessages.appendChild(userMsg);
+      input.value = '';
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+
+      // Show typing indicator
+      const typingMsg = document.createElement('div');
+      typingMsg.className = 'message bot-message typing-dots';
+      typingMsg.textContent = '🤖 Typing';
+      chatMessages.appendChild(typingMsg);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+
+      // Fetch bot response
+      fetch('/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: message })
+      })
+      .then(response => {
+        if (!response.ok) throw new Error('Network response was not ok');
+        return response.json();
+      })
+      .then(data => {
+        // Remove typing indicator
+        typingMsg.remove();
+        // Display bot response
+        const botMsg = document.createElement('div');
+        botMsg.className = 'message bot-message';
+        botMsg.innerHTML = `🤖 ${data.reply}`;
+        chatMessages.appendChild(botMsg);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      })
+      .catch(error => {
+        // Remove typing indicator
+        typingMsg.remove();
+        // Display error message
+        const botMsg = document.createElement('div');
+        botMsg.className = 'message bot-message';
+        botMsg.innerHTML = `🤖 Sorry, something went wrong: ${error.message}`;
+        chatMessages.appendChild(botMsg);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      });
+    }
+
+    // Allow Enter key to send message
+    document.getElementById('chatInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+  </script>
+</body>
+</html>

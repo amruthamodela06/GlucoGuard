@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Diasure - Your Diabetes Companion</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f6f9fc;
+      color: #333;
+      line-height: 1.6;
+      scroll-behavior: smooth;
+    }
+
+    .navbar {
+      background-color: #ffffff;
+      padding: 16px 32px;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo img {
+      width: 36px;
+      height: 36px;
+    }
+
+    .logo span {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #1c87c9;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-links li a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links li a:hover {
+      color: #1c87c9;
+    }
+
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px 20px;
+      background: url('{{ url_for("static", filename="bg.jpg") }}') no-repeat center center/cover;
+      color: white;
+      min-height: 90vh;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin-bottom: 30px;
+    }
+
+    .btn-primary,
+    .btn-checkup {
+      background-color: #1c87c9;
+      color: white;
+      padding: 14px 28px;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: background 0.3s ease;
+      margin-top: 10px;
+      display: inline-block;
+    }
+
+    .btn-primary:hover,
+    .btn-checkup:hover {
+      background-color: #166da5;
+    }
+
+    .features {
+      background-color: #fff;
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    .features h2 {
+      font-size: 2rem;
+      color: #1c87c9;
+      margin-bottom: 40px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 40px;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .feature-card {
+      background: #f9fbfd;
+      padding: 30px 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      transition: transform 0.2s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .feature-card i {
+      font-size: 2rem;
+      color: #1c87c9;
+      margin-bottom: 15px;
+    }
+
+    .feature-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+
+    .feature-card p {
+      font-size: 0.95rem;
+      color: #555;
+    }
+
+    footer {
+      background: #fff;
+      padding: 20px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #999;
+      border-top: 1px solid #ddd;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
+      <span>Diasure</span>
+    </div>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="#features">Features</a></li>
+        {% if 'user_id' in session %}
+          <li><a href="/history">History</a></li>
+          <li><a href="/checkup">Checkup</a></li>
+          <li><a href="/logout">Logout</a></li>
+        {% else %}
+          <li><a href="/login">Login</a></li>
+          
+        {% endif %}
+      </ul>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>Track. Predict. Live Better.</h1>
+    <p>Take control of your diabetes with smart tools, personalized guidance from our chatbot, and regular checkups.</p>
+    <a href="/signup" class="btn-primary">Get Started</a>
+    {% if 'user_id' in session %}
+      <a href="/checkup" class="btn-checkup">Take a New Checkup</a>
+    {% endif %}
+  </section>
+
+  <section id="features" class="features">
+    <h2>What You’ll Discover</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <i class="fas fa-tint"></i>
+        <h3>Understand Root Causes</h3>
+        <p>Explore what drives your diabetes with smart Q&A, beyond just sugar intake.</p>
+      </div>
+      <div class="feature-card">
+        <i class="fas fa-apple-alt"></i>
+        <h3>Personalized Nutrition</h3>
+        <p>Get a diet tailored to your health profile with personalized meal plans.</p>
+      </div>
+      <div class="feature-card">
+        <i class="fas fa-pills"></i>
+        <h3>Reduce Medication</h3>
+        <p>Track lifestyle changes to see how diet and exercise may impact medication needs.</p>
+      </div>
+      <div class="feature-card">
+        <i class="fas fa-user-md"></i>
+        <h3>Live Q&A with Experts</h3>
+        <p>Ask our smart assistant live to clear your diabetes doubts with personalized advice.</p>
+      </div>
+    </div>
+  </section>
+  
+  <footer>
+    <p>&copy; 2025 Diasure. All rights reserved.</p>
+  </footer>
+</body>
+</html>

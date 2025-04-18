@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prediction History PDF</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #1c87c9;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ user.username }}'s Diabetes Prediction History</h1>
+    <!-- Added simple prediction list from the first snippet -->
+    <h2>Summary</h2>
+    {% for pred in predictions %}
+        <p>{{ pred.timestamp.strftime('%d %b %Y, %I:%M %p') }}: {{ pred.prediction }}</p>
+    {% endfor %}
+    <!-- Original table structure remains unchanged -->
+    {% if predictions and predictions|length > 0 %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Glucose</th>
+                    <th>Blood Pressure</th>
+                    <th>BMI</th>
+                    <th>Age</th>
+                    <th>Prediction</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in predictions %}
+                    <tr>
+                        <td>{{ item.timestamp.strftime('%d %b %Y, %I:%M %p') }}</td>
+                        <td>{{ item.glucose }}</td>
+                        <td>{{ item.bp }}</td>
+                        <td>{{ item.bmi }}</td>
+                        <td>{{ item.age }}</td>
+                        <td>{{ item.prediction }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No prediction history available.</p>
+    {% endif %}
+</body>
+</html>
