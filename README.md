@@ -1,2 +1,7 @@
 # DIABETES_PREDICTION
-Author-N.Pooja
+Authors-
+M. Vijaya Sathvika
+M.satvika
+M.Amrutha
+M.Lohitha
+N.Pooja
