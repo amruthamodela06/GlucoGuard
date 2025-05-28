@@ -45,6 +45,9 @@ def index():
         print("Redirecting to dashboard")
         return redirect('/dashboard')
     return render_template('index.html', hide_navbar=True)
+@app.route('/health')
+def health_check():
+    return 'OK', 200
 
 @app.route('/dashboard', methods=['GET', 'POST'], endpoint='dashboard')
 @login_required
