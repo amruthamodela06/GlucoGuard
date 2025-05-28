@@ -240,5 +240,8 @@ def checkup():
 with app.app_context():
     db.create_all()
 
+import os
+
 if __name__ == '__main__':
-    app.run(debug=True, port=5001, use_reloader=False, threaded=False)
+    port = int(os.environ.get("PORT", 5000))  # Default to 5000 if PORT not set
+    app.run(host='0.0.0.0', port=port)
