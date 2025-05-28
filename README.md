@@ -1,7 +1,7 @@
 # DIABETES_PREDICTION
-Authors-
-M. Vijaya Sathvika
-M.satvika
-M.Amrutha
-M.Lohitha
-N.Pooja
+Authors-<br/>
+M. Vijaya Sathvika <br/>
+M.satvika <br/>
+M.Amrutha<br/>
+M.Lohitha <br/>
+N.Pooja 
