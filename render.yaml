@@ -1,6 +1,11 @@
 services:
   - type: web
     name: diasure-app
-    env: python
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "python app.py"
+    runtime: python
+    region: oregon  # or frankfurt, singapore, etc.
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false  # Set the value securely in the Render Dashboard
