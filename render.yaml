@@ -7,5 +7,5 @@ services:
     buildCommand: pip install -r requirements.txt
     startCommand: bash -c "gunicorn app:app --bind 0.0.0.0:$PORT"
     envVars:
-      - key: FLASK_ENV
-        sync: production # Set the value securely in the Render Dashboard
+      - key: PORT
+        value: 10000 # Set the value securely in the Render Dashboard
