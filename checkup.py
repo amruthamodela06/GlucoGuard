@@ -1,9 +1,14 @@
 from flask import Blueprint, render_template, request, session, redirect
 from models import db, PredictionHistory
-import numpy as np
-from train_model import best_rf, scaler  # Import trained model and scaler
+import os
+from joblib import load
 
 checkup = Blueprint('checkup', __name__)
+
+# lazy‐load serialized model + scaler
+BASE = os.path.dirname(__file__)
+best_rf = load(os.path.join(BASE, "models", "best_rf.joblib"))
+scaler  = load(os.path.join(BASE, "models", "scaler.joblib"))
 
 @checkup.route('/checkup', methods=['GET', 'POST'])
 def checkup_view():

@@ -15,11 +15,13 @@ load_dotenv()  # Add at the top
 genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
 
 app = Flask(__name__)
-app.secret_key = 'your-secret-key'  # Replace with a secure key
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+
+app.secret_key = os.getenv('SECRET_KEY', 'sup24er1s56e7c2re5421t')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
+
 app.register_blueprint(auth)
 app.register_blueprint(checkup)
 
