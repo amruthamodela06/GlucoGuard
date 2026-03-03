@@ -57,10 +57,16 @@ Database
 SQLAlchemy
 
 ⚙️ Installation & Setup
+
 1️⃣ Install Dependencies
+
 pip install -r requirements.txt
+
 2️⃣ Run the Application
+
 python app.py
+
+
 Diasure (prev titled GlucoGuard)<br/>
 Authors-<br/>
 M. Vijaya Sathvika <br/>
