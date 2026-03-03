@@ -68,7 +68,11 @@ python app.py
 
 Authors
 M.Amrutha
+
 M.Sathvika
+
 M.Lohitha
+
 M.Satvika
+
 N.Pooja
