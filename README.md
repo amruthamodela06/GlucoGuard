@@ -66,11 +66,9 @@ pip install -r requirements.txt
 
 python app.py
 
-
-Diasure (prev titled GlucoGuard)<br/>
-Authors-<br/>
-M. Vijaya Sathvika <br/>
-M. Amrutha<br/>
-M. Satvika <br/>
-M.Lohitha <br/>
-N.Pooja 
+Authors
+M.Amrutha
+M.Sathvika
+M.Lohitha
+M.Satvika
+N.Pooja
