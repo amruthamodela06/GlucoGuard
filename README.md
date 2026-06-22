@@ -1,10 +1,10 @@
-# 🩺 Diasure – Diabetes Prediction Web Application
+# Diasure – Diabetes Prediction Web Application
 
 Diasure is a web-based application designed to predict diabetes risk and promote proactive health management through technology. By combining machine learning with lifestyle tracking tools, the platform empowers users to make informed decisions about their well-being.
 
 ---
 
-## 🎯 Objective
+## Objective
 
 - Predict diabetes risk using user health parameters
 - Support healthy lifestyle choices through tracking tools
@@ -13,7 +13,7 @@ Diasure is a web-based application designed to predict diabetes risk and promote
 
 ---
 
-## 🚀 Key Features
+##  Key Features
 
 - 🧠 **Diabetes Risk Prediction** using Machine Learning
 - 📊 **User Dashboard** with navigation and monitoring tools
